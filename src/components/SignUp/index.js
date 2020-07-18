@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import ROUTES from '../../constants/routes'
-
+import { Link, withRouter } from 'react-router-dom'
+import * as ROUTES from '../../constants/routes'
+import { withFirebase } from '../Firebase'
+import {compose} from 'recompose'
 
 const SignUp = () => {
     return (
         <div>
-            <h1>
-                Sign Up
-        </h1>
+            <h1> Sign Up </h1>
             <SignUpForm />
         </div>
     )
@@ -23,16 +22,30 @@ const INITIAL_STATE = {
     error: null
 }
 
-class SignUpForm extends Component {
+class SignUpFormBase extends Component {
 
-    constructor(props) {
+    /*constructor(props) {
         super(props);
         console.log('SignUpForm')
         this.state = { ...INITIAL_STATE }
-    }
+    }*/
+    state = { ...INITIAL_STATE }
 
     onSubmit = (event) => {
 
+        const { email, passwordOne } = this.state;
+        this.props
+            .firebase
+            .doCreateUserWithEmailAndPassword(email, passwordOne)
+            .then(() => {
+                this.setState(INITIAL_STATE)
+                this.props.history.push(ROUTES.HOME)
+            })
+            .catch(error => {
+                this.setState({ error })
+                console.log('state:', this.state)
+            })
+        event.preventDefault();
     }
 
     onChange = ({ target }) => {
@@ -40,7 +53,20 @@ class SignUpForm extends Component {
     }
 
     render() {
-        const { username, email, passwordOne, passwordTwo, error } = this.state;
+        const {
+            username,
+            email,
+            passwordOne,
+            passwordTwo,
+            error
+        } = this.state;
+
+        const isInvalid =
+            passwordTwo !== passwordOne ||
+            passwordOne === '' ||
+            passwordTwo === '' ||
+            email === '' || username === '';
+
         return (
             <form onSubmit={this.onSubmit}>
                 <input
@@ -72,7 +98,8 @@ class SignUpForm extends Component {
                     placeholder='Confirm Password'
                 ></input>
 
-                <button type='submit'>Sign Up</button>
+                <button disabled={isInvalid} type='submit'>Sign Up</button>
+
                 {error && <p>{error.message} </p>}
             </form>
         )
@@ -89,4 +116,9 @@ const SignUpLink = () => (
 
 
 export default SignUp
+const SignUpForm = compose(
+    withRouter,
+    withFirebase)
+    (SignUpFormBase);
+
 export { SignUpForm, SignUpLink }
