@@ -116,6 +116,7 @@ const SignUpLink = () => (
 
 
 export default SignUp
+
 const SignUpForm = compose(
     withRouter,
     withFirebase)
