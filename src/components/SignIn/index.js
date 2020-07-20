@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes'
 import { SignUpLink } from '../SignUp';
+import { PasswordForgetLink } from '../PasswordForget';
 
 const SignIn = () => {
     return (
@@ -11,6 +12,7 @@ const SignIn = () => {
             <h1>Sign In</h1>
             <SignInForm />
             <SignUpLink/>
+            <PasswordForgetLink/>
         </div>
     )
 }
