@@ -10,6 +10,7 @@ import { AuthUserContext } from '../Session'
  */
 
 const Navigation = () => (
+
     <AuthUserContext.Consumer>
         {authUser =>
             authUser
