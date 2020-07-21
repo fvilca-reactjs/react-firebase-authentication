@@ -3,7 +3,7 @@ import { withFirebase } from '../Firebase'
 
 /* @author {firebase} req 
  * @param  firebase object passed as context consumer
- * @params: 
+ * refactor --> is missing a redirect to a LandingPage or Home  
  */
 
 const SignOutButton = ({firebase}) => (

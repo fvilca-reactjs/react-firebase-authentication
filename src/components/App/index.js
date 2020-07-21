@@ -10,6 +10,7 @@ import Home from '../Home'
 import Account from '../Account'
 import Admin from '../Admin'
 import { withAuthentication } from '../Session'
+import 'antd/dist/antd.css';
 
 /** 
  *  @param authUser --> means that a user is trully authenticated 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
 import SignOutButton from '../SignOut'
 import { AuthUserContext } from '../Session'
-
+import './navbar.scss'
 /**
  * refactor --> use Consumer of the context
  * refactor --> use  useContext Hook instead of Consumer
@@ -22,12 +22,12 @@ const Navigation = () => (
 )
 
 const NavigationAuth = () => (
-    <ul>
+    <nav> <ul className="menuItems">
         <li>
             <Link to={ROUTES.LANDING} >Landing</Link>
         </li>
         <li>
-            <Link to={ROUTES.HOME} >Home</Link>
+            <Link to={ROUTES.HOME} data-item='Home' >Home</Link>
         </li>
         <li>
             <Link to={ROUTES.ACCOUNT} >Account</Link>
@@ -35,17 +35,17 @@ const NavigationAuth = () => (
         <li>
             <SignOutButton />
         </li>
-    </ul>
+    </ul></nav>
 )
 const NavigationNonAuth = () => (
-    <ul>
+    <nav> <ul className="menuItems">
         <li>
             <Link to={ROUTES.LANDING} >Landing</Link>
         </li>
         <li>
             <Link to={ROUTES.SIGN_IN} >Sign In</Link>
         </li>
-    </ul>
+        </ul></nav>
 )
 
 export default Navigation

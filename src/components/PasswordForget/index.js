@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { withFirebase } from '../Firebase/context'
+import { withFirebase } from '../Firebase/'
 import { Link } from 'react-router-dom';
-import * as ROUTES from '../../constants/roles'
+import * as ROUTES from '../../constants/routes'
 
 /**
  * refactor : can you use a stateless component
+ * refactor --> when send an email , I recieve  a mail with this account noreply@yamaya-app.firebaseapp.com
  */
 
 const PasswordForget = () => {
