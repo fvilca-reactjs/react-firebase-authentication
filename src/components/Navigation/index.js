@@ -22,15 +22,20 @@ const Navigation = () => (
 )
 
 const NavigationAuth = () => (
+
+
     <nav> <ul className="menuItems">
         <li>
-            <Link to={ROUTES.LANDING} >Landing</Link>
+            <Link to={ROUTES.LANDING} data-item='Landing' >Landing</Link>
         </li>
         <li>
             <Link to={ROUTES.HOME} data-item='Home' >Home</Link>
         </li>
         <li>
-            <Link to={ROUTES.ACCOUNT} >Account</Link>
+            <Link to={ROUTES.ACCOUNT} data-item='Account'>Account</Link>
+        </li>
+        <li>
+            <Link to={ROUTES.ADMIN} data-item='Admin'>Admin</Link>
         </li>
         <li>
             <SignOutButton />
@@ -38,14 +43,15 @@ const NavigationAuth = () => (
     </ul></nav>
 )
 const NavigationNonAuth = () => (
+
     <nav> <ul className="menuItems">
         <li>
-            <Link to={ROUTES.LANDING} >Landing</Link>
+            <Link to={ROUTES.LANDING} data-item='Landing'>Landing</Link>
         </li>
         <li>
-            <Link to={ROUTES.SIGN_IN} >Sign In</Link>
+            <Link to={ROUTES.SIGN_IN} data-item='SignIn'>SignIn</Link>
         </li>
-        </ul></nav>
+    </ul></nav>
 )
 
 export default Navigation

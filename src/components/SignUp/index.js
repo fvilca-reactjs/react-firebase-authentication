@@ -2,8 +2,12 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
 import { withFirebase } from '../Firebase'
-import {compose} from 'recompose'
+import { compose } from 'recompose'
 
+/**
+ * refactor: can you useReducer instead to do more readable
+ * in another example we need to use create user and sign in together, but it isnot necessary
+ */
 const SignUp = () => {
     return (
         <div>
@@ -33,13 +37,32 @@ class SignUpFormBase extends Component {
 
     onSubmit = (event) => {
 
-        const { email, passwordOne } = this.state;
+        const { username, email, passwordOne } = this.state;
         this.props
             .firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
-            .then(() => {
-                this.setState(INITIAL_STATE)
-                this.props.history.push(ROUTES.HOME)
+            .then((auth) => {
+                this.props.firebase.db
+                    .collection('Users')
+                    .doc(auth.user.uid)
+                    .set({
+                        id: auth.user.uid,
+                        email: email,
+                        nombre: username,
+                        apellido: '',
+                        telefono: '',
+                        foto: ''
+                    }, {
+                        merge: true
+                    })
+                    .then(() => {
+                        // BY DEFAULT sign in is done.
+                        this.setState(INITIAL_STATE)
+                        this.props.history.push(ROUTES.HOME)
+                    })
+                    .catch(error => {
+                        this.setState({ error })
+                    })
             })
             .catch(error => {
                 this.setState({ error })
