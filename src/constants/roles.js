@@ -1,4 +1,4 @@
-export const ADMIN = 0;
-export const USER = 1;
-export const GUESS = 2;
+export const ADMIN = 'ADMIN';
+export const USER = 'USER';
+export const GUESS = 'GUESS';
 

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { withAuthorization } from '../Session'
+import Loading from '../Layout/loading'
+
+
+
 //import * as ROLES from '../../constants/roles'
 
 const INITIAL_STATE = {
@@ -12,7 +16,7 @@ const Admin = (props) => {
     const [state, setState] = useState(INITIAL_STATE)
 
     useEffect(() => {
-
+        console.log('Admin:')
         setState({ loading: true, users: [] })
 
         props.firebase.db.collection('Users')
@@ -42,7 +46,7 @@ const Admin = (props) => {
         <div>
             <h1>Admin</h1>
             <p>Restricted area Only users with the admin role are authorized</p>
-            {state.loading && <p>Loading...</p>}
+            {state.loading && <Loading />}
             <UserList users={state.users} />
         </div>
     )
@@ -63,11 +67,8 @@ const UserList = ({ users }) => (
         ))}
     </ul>
 );
-
-
 //export default withFirebase(Admin)
 const condition = authUser => authUser != null;
 export default withAuthorization(condition)(Admin)
-
 //const condition =  authUser => authUser && !!authUser.roles[ROLES.ADMIN]
 //export default withAuthorization(condition)(Admin)

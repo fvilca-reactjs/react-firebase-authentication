@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import * as ROUTES from '../../constants/routes'
+
 import { withFirebase } from '../Firebase'
 import { compose } from 'recompose'
-
+import * as ROUTES from '../../constants/routes'
+import * as ROLES from '../../constants/roles'
 /**
  * refactor: can you useReducer instead to do more readable
  * in another example we need to use create user and sign in together, but it isnot necessary
@@ -23,6 +24,7 @@ const INITIAL_STATE = {
     email: '',
     passwordOne: '',
     passwordTwo: '',
+    isAdmin: false,
     error: null
 }
 
@@ -37,7 +39,13 @@ class SignUpFormBase extends Component {
 
     onSubmit = (event) => {
 
-        const { username, email, passwordOne } = this.state;
+        const { username, email, passwordOne, isAdmin } = this.state;
+        const roles = {}
+
+        if (isAdmin){
+            roles[ROLES.ADMIN] = ROLES.ADMIN;
+        }
+        
         this.props
             .firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -51,7 +59,8 @@ class SignUpFormBase extends Component {
                         nombre: username,
                         apellido: '',
                         telefono: '',
-                        foto: ''
+                        foto: '',
+                        roles:roles
                     }, {
                         merge: true
                     })
@@ -74,13 +83,16 @@ class SignUpFormBase extends Component {
     onChange = ({ target }) => {
         this.setState({ [target.name]: target.value })
     }
-
+    onChangeCheckBox  = ({target}) =>{
+        this.setState({[target.name]:target.checked})
+    }
     render() {
         const {
             username,
             email,
             passwordOne,
             passwordTwo,
+            isAdmin,
             error
         } = this.state;
 
@@ -118,8 +130,17 @@ class SignUpFormBase extends Component {
                     value={passwordTwo}
                     onChange={this.onChange}
                     type='password'
-                    placeholder='Confirm Password'
+                    placeholder='Confirm ..Password'
                 ></input>
+                <label><br/>
+                    Is Admin? 
+                    <input
+                    name='isAdmin'
+                    value={isAdmin}
+                    onChange={this.onChangeCheckBox}
+                    type='checkbox'
+                    />
+                </label><br/>
 
                 <button disabled={isInvalid} type='submit'>Sign Up</button>
 
