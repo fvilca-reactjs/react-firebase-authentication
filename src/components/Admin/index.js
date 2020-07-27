@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { withAuthorization } from '../Session'
 import Loading from '../Layout/loading'
+import * as ROLES from '../../constants/roles'
 
+/**
+ * another method for get data from query is ForEach 
+ */
 
-
-//import * as ROLES from '../../constants/roles'
 
 const INITIAL_STATE = {
     loading: false,
@@ -28,20 +30,13 @@ const Admin = (props) => {
             })
             .catch(error => {
                 console.log("Error:", error)
-            })
-
-        props.firebase.db.collection('Users')
-            .get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    //console.log(doc.id, '=>', doc.data());
-                });
-            })
-            .catch(err => {
-                console.log('Error getting documents', err);
             });
+            return ()=>{
+                
+            }
     }, []);
 
+    
     return (
         <div>
             <h1>Admin</h1>
@@ -68,7 +63,7 @@ const UserList = ({ users }) => (
     </ul>
 );
 //export default withFirebase(Admin)
-const condition = authUser => authUser != null;
+const condition = authUser => authUser != null && authUser.roles[ROLES.ADMIN];
 export default withAuthorization(condition)(Admin)
 //const condition =  authUser => authUser && !!authUser.roles[ROLES.ADMIN]
 //export default withAuthorization(condition)(Admin)
