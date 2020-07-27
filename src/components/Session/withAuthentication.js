@@ -12,30 +12,30 @@ const withAuthentication = (Component) => {
 
     class withAuthentication extends React.Component {
 
-        state = { authUser: null }
+        state = {
+            authUser: null
+        }
 
         componentDidMount() {
 
             this.listener = this.props.firebase.auth.onAuthStateChanged(
                 authUser => {
-                    if (authUser) {
 
+                    if (authUser) {
                         this.props.firebase.db.collection('Users')
                             .doc(authUser.uid)
                             .get()
                             .then(doc => {
-                                authUser={
-                                    uid:authUser.uid,
-                                    email:authUser.email,
+                                authUser = {
+                                    uid: authUser.uid,
+                                    email: authUser.email,
                                     ...doc.data()
-                                }  
+                                }
                                 this.setState({ authUser })
                             })
                             .catch(error => {
                                 console.log("Error:", error)
                             });
-
-                        
                     } else {
                         this.setState({ authUser: null });
                     }

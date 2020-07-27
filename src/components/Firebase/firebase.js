@@ -19,6 +19,7 @@ class Firebase {
         app.initializeApp(config)
         this.auth = app.auth();
         this.db = app.firestore()
+        this.googleProvider = new app.auth.GoogleAuthProvider();
     }
 
     // ====> Auth api
@@ -38,6 +39,9 @@ class Firebase {
     user = (uid) => this.db.ref(`users/${uid}`)
     
     users = () => this.db.ref('users')
+
+    doSignInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider)
+    
 }
 
 export default Firebase;
