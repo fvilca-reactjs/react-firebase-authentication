@@ -17,6 +17,6 @@ const Account = () => {
         </AuthUserContext.Consumer>
     )
 }
-const condition = (authUser) => authUser != null;
+const condition = (authUser) => !!authUser
 
 export default withAuthorization(condition)(Account)

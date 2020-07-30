@@ -10,7 +10,7 @@ const Home = () => {
     )
 }
 
-const condition = authUser => authUser != null; 
+const condition = authUser => !!authUser; 
 export default withAuthorization(condition) (Home)
 
 /*

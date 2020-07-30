@@ -35,9 +35,9 @@ const NavigationAuth = ({authUser}) => {
         <li>
             <Link to={ROUTES.ACCOUNT} data-item='Account'>Account</Link>
         </li>
-        { authUser.roles[ROLES.ADMIN] && <li>
+        { authUser.roles.includes(ROLES.ADMIN) && ( <li>
             <Link to={ROUTES.ADMIN} data-item='Admin'>Admin</Link>
-        </li>}
+        </li>)}
         <li>
             <SignOutButton />
         </li>

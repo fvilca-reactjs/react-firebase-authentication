@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Navigation from '../Navigation'
-import * as ROUTES from '../../constants/routes'
+
 import Landing from '../Landing'
 import SignUp from '../SignUp'
 import SignIn from '../SignIn'
@@ -9,8 +9,9 @@ import PasswordForget from '../PasswordForget'
 import Home from '../Home'
 import Account from '../Account'
 import Admin from '../Admin'
+
+import * as ROUTES from '../../constants/routes'
 import { withAuthentication } from '../Session'
-import 'antd/dist/antd.css';
 
 /** 
  *  @param authUser --> means that a user is trully authenticated 
@@ -18,27 +19,19 @@ import 'antd/dist/antd.css';
  * ? refactor --> useEffect Hook can be use instead. with authuser as observer and remove listener
  * ?  refactor observer using await and async 
  */
-class App extends Component {
-
-    render() {
-        return (
-            <Router>
-                <div>
-                    <Navigation />
-                    <hr />
-                    <Route path={ROUTES.LANDING} component={Landing} exact />
-                    <Route path={ROUTES.SIGN_UP} component={SignUp} />
-                    <Route path={ROUTES.SIGN_IN} component={SignIn} />
-                    <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-                    <Route path={ROUTES.HOME} component={Home} />
-                    <Route path={ROUTES.ACCOUNT} component={Account} />
-                    <Route path={ROUTES.ADMIN} component={Admin} />
-                </div>
-            </Router>
-        )
-    }
-}
-
-//export default withFirebase(App);
+const App = () => (
+    <Router>
+        <div>
+            <Navigation />
+            <hr />
+            <Route path={ROUTES.LANDING} component={Landing} exact />
+            <Route path={ROUTES.SIGN_UP} component={SignUp} />
+            <Route path={ROUTES.SIGN_IN} component={SignIn} />
+            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
+            <Route path={ROUTES.HOME} component={Home} />
+            <Route path={ROUTES.ACCOUNT} component={Account} />
+            <Route path={ROUTES.ADMIN} component={Admin} />
+        </div>
+    </Router>
+)
 export default withAuthentication(App);
-//

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { compose } from 'recompose';
 import { withAuthorization } from '../Session'
 import Loading from '../Layout/loading'
 import * as ROLES from '../../constants/roles'
+import { withFirebase } from '../Firebase';
+
 
 /**
  * another method for get data from query is ForEach 
@@ -58,12 +61,16 @@ const UserList = ({ users }) => (
                 <span>
                     <strong>Username:</strong> {user.nombre}
                 </span>
+                <span>
+                    <strong>Rol:</strong> {user.roles}
+                </span>
             </li>
         ))}
     </ul>
 );
-//export default withFirebase(Admin)
-const condition = authUser => authUser != null && authUser.roles[ROLES.ADMIN];
-export default withAuthorization(condition)(Admin)
-//const condition =  authUser => authUser && !!authUser.roles[ROLES.ADMIN]
-//export default withAuthorization(condition)(Admin)
+
+const condition = authUser => authUser && authUser.roles.includes(ROLES.ADMIN);
+export default compose(
+    withAuthorization(condition),
+    withFirebase,
+)(Admin)

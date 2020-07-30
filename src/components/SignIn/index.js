@@ -12,6 +12,7 @@ const SignIn = () => {
             <h1>Sign In</h1>
             <SignInForm />
             <SignInGoogle />
+            <SignInFacebook />
             <SignUpLink />
             <PasswordForgetLink />
         </div>
@@ -26,19 +27,18 @@ const INITIAL_STATE = {
 class SignInFormBase extends Component {
 
     state = INITIAL_STATE;
+
     onSubmit = (event) => {
 
         const { email, password } = this.state;
         this.props
             .firebase
             .doSignInWithEmailAndPassword(email, password)
-            .then(auth => {
-                console.log('auth:OK')
-                //this.setState(INITIAL_STATE)
+            .then(() => {
+                this.setState({ ...INITIAL_STATE })
                 this.props.history.push(ROUTES.HOME)
             })
             .catch(error => {
-                console.log(error)
                 this.setState({ error })
             })
         event.preventDefault();
@@ -82,8 +82,27 @@ class SignInGoogleBase extends Component {
 
     onSubmit = (event) => {
         this.props.firebase.doSignInWithGoogle()
-            .then(authUser => {
-                console.log(authUser)
+            .then(socialAuthUser => {
+                this.props.firebase.db
+                    .collection('Users')
+                    .doc(socialAuthUser.user.uid)
+                    .set({
+                        id: socialAuthUser.user.uid,
+                        email: socialAuthUser.user.email,
+                        nombre: socialAuthUser.user.displayName,
+                        apellido: '',
+                        telefono: '',
+                        foto: '',
+                        roles: [],
+                    })
+                    .then(() => {
+                        // BY DEFAULT sign in is done.
+                        this.setState({ error: null })
+                        this.props.history.push(ROUTES.HOME)
+                    })
+                    .catch(error => {
+                        this.setState({ error })
+                    })
                 this.props.history.push(ROUTES.HOME)
             })
             .catch(error => {
@@ -101,6 +120,51 @@ class SignInGoogleBase extends Component {
         )
     }
 }
+class SignInFacebookBase extends Component {
+
+    state = { error: null }
+
+    onSubmit = (event) => {
+        this.props.firebase
+            .doSignInWithFacebook()
+            .then(socialAuthUser => {
+                this.props.firebase.db
+                    .collection('Users')
+                    .doc(socialAuthUser.user.uid)
+                    .set({
+                        id: socialAuthUser.user.uid,
+                        email: socialAuthUser.additionalUserInfo.profile.email,
+                        nombre: socialAuthUser.additionalUserInfo.profile.name,
+                        apellido: '',
+                        telefono: '',
+                        foto: '',
+                        roles: [],
+                    })
+                    .then(() => {
+                        this.setState({ error: null })
+                        this.props.history.push(ROUTES.HOME)
+                    })
+                    .catch(error => {
+                        this.setState({ error })
+                    })
+                this.props.history.push(ROUTES.HOME)
+            })
+            .catch(error => {
+                this.setState({ error })
+            })
+
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.onSubmit}>
+                <button>Sign In with Facebook</button>
+                {this.error && <p>{this.error.message} </p>}
+            </form>
+        )
+    }
+}
 
 
 
@@ -110,9 +174,15 @@ const SignInForm = compose(
     withRouter,
     withFirebase)
     (SignInFormBase)
-export { SignInForm }
 
 const SignInGoogle = compose(
     withRouter,
     withFirebase,
 )(SignInGoogleBase)
+
+const SignInFacebook = compose(
+    withRouter,
+    withFirebase,
+)(SignInFacebookBase)
+
+export { SignInForm, SignInGoogle, SignInFacebook }

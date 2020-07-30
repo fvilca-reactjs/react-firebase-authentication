@@ -40,18 +40,16 @@ class SignUpFormBase extends Component {
     onSubmit = (event) => {
 
         const { username, email, passwordOne, isAdmin } = this.state;
-        const roles = {}
+        const roles = []
 
-        if (isAdmin){
-            roles[ROLES.ADMIN] = ROLES.ADMIN;
-        }else{
-            roles[ROLES.USER] = ROLES.USER;
+        if (isAdmin) {
+            roles.push(ROLES.ADMIN);
         }
-        
+
         this.props
             .firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
-            .then((auth) => {
+            .then(auth => {
                 this.props.firebase.db
                     .collection('Users')
                     .doc(auth.user.uid)
@@ -62,13 +60,11 @@ class SignUpFormBase extends Component {
                         apellido: '',
                         telefono: '',
                         foto: '',
-                        roles:roles
-                    }, {
-                        merge: true
+                        roles: roles,
                     })
                     .then(() => {
                         // BY DEFAULT sign in is done.
-                        this.setState(INITIAL_STATE)
+                        this.setState({ ...INITIAL_STATE })
                         this.props.history.push(ROUTES.HOME)
                     })
                     .catch(error => {
@@ -77,7 +73,6 @@ class SignUpFormBase extends Component {
             })
             .catch(error => {
                 this.setState({ error })
-                console.log('state:', this.state)
             })
         event.preventDefault();
     }
@@ -85,8 +80,8 @@ class SignUpFormBase extends Component {
     onChange = ({ target }) => {
         this.setState({ [target.name]: target.value })
     }
-    onChangeCheckBox  = ({target}) =>{
-        this.setState({[target.name]:target.checked})
+    onChangeCheckBox = ({ target }) => {
+        this.setState({ [target.name]: target.checked })
     }
     render() {
         const {
@@ -134,15 +129,15 @@ class SignUpFormBase extends Component {
                     type='password'
                     placeholder='Confirm ..Password'
                 ></input>
-                <label><br/>
-                    Is Admin? 
+                <label><br />
+                    Is Admin?
                     <input
-                    name='isAdmin'
-                    value={isAdmin}
-                    onChange={this.onChangeCheckBox}
-                    type='checkbox'
+                        name='isAdmin'
+                        value={isAdmin}
+                        onChange={this.onChangeCheckBox}
+                        type='checkbox'
                     />
-                </label><br/>
+                </label><br />
 
                 <button disabled={isInvalid} type='submit'>Sign Up</button>
 
@@ -161,11 +156,12 @@ const SignUpLink = () => (
 )
 
 
-export default SignUp
+
 
 const SignUpForm = compose(
     withRouter,
     withFirebase)
     (SignUpFormBase);
 
+export default SignUp
 export { SignUpForm, SignUpLink }
