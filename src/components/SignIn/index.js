@@ -6,6 +6,16 @@ import * as ROUTES from '../../constants/routes'
 import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
 
+
+/**
+ * No se puede realizar una actualización de estado Reaccionar en un componente desmontado. Esto es un no-op, pero indica una pérdida de memoria en su aplicación. Para solucionarlo, cancele todas las suscripciones y tareas asincrónicas en el método componentWillUnmount.
+     en SignInFacebookBase (en Firebase / index.js: 10)
+     en Desconocido (creado por Context.Consumer)
+     con withRouter () (en SignIn / index.js: 15)
+     en div (en SignIn / index.js: 11)
+     en SignIn (creado por Context.Consumer)
+     
+ */
 const SignIn = () => {
     return (
         <div>

@@ -76,6 +76,11 @@ class Firebase {
 
     }
 
+    //* Message API
+    message = (uid) => this.db.ref(`messages/${uid}`);
+    messages = () => this.db.ref('messages');
+
+
 }
 
 export default Firebase;

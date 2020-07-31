@@ -13,14 +13,3 @@ const Home = () => {
 const condition = authUser => !!authUser; 
 export default withAuthorization(condition) (Home)
 
-/*
-before we will create withAuthorization hig order component
-const Home = () => {
-    return (
-        <AuthUserContext.Consumer>
-            {authUser=> authUser? 'Home with authUser':'Home With out AuthUser'}
-        </AuthUserContext.Consumer>
-    )
-}*/
-
-
