@@ -41,10 +41,6 @@ class Firebase {
 
     doPasswordUpdate = (password) => this.auth.currentUser.updatePassword(password);
 
-    user = (uid) => this.db.ref(`users/${uid}`)
-
-    users = () => this.db.ref('users')
-
     // *** Merge Auth and db User api *** //
 
     onAuthUserListener = (next, fallback) => {
@@ -77,10 +73,20 @@ class Firebase {
     }
 
     //* Message API
-    message = (uid) => this.db.ref(`messages/${uid}`);
-    messages = () => this.db.ref('messages');
-
+    message = (id) => this.db.collection('messages').doc(id).get();
+    messages = () => this.db.collection('Messages')
 
 }
 
 export default Firebase;
+
+/*
+(querySnapshot => {
+            var menu = querySnapshot.docs.map(doc => { return { ...doc.data(), id: doc.id } });
+            */
+
+/*  empty method allows to validate if there is data even if there is  a Collection 
+.then(
+    querySnapshot => {
+        if (!querySnapshot.empty) {
+   */
