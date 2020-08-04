@@ -21,6 +21,7 @@ class Firebase {
         this.db = app.firestore()
         this.googleProvider = new app.auth.GoogleAuthProvider();
         this.facebookProvider = new app.auth.FacebookAuthProvider();
+        this.timestamp = app.firestore.FieldValue.serverTimestamp();
     }
 
     // ====> Auth api
@@ -73,7 +74,7 @@ class Firebase {
     }
 
     //* Message API
-    message = (id) => this.db.collection('messages').doc(id).get();
+    message = (id) => this.db.collection('Messages').doc(id);
     messages = () => this.db.collection('Messages')
 
 }

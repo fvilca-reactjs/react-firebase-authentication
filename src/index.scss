@@ -13,7 +13,28 @@ body {
 }
 strong {
   color: rgb(47, 255, 168);
+  //color: rgb(170, 0, 162);
 }
 .tit {
   color: gray;
 }
+
+.message-item {
+  padding: 2px;
+}
+
+.delete{
+  color:rgba(233, 14, 61, 0.8);
+}
+//Colours
+$blue: #3498db;
+$yellow: #f1c40f;
+$purple: #8e44ad;
+$turquoise: #1abc9c;
+
+$bg_color_first: #2E373E;
+$bg_color_second: #3B4850;
+$red:#B70B3D;
+$green: #16DBA3;
+
+
