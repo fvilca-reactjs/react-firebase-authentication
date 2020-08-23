@@ -1,6 +1,7 @@
 import app from 'firebase/app'
 import '@firebase/auth'
 import 'firebase/firestore'
+import 'firebase/storage'
 
 const config = {
     apiKey: process.env.REACT_APP_apiKey,
@@ -18,10 +19,13 @@ class Firebase {
     constructor() {
         app.initializeApp(config)
         this.auth = app.auth();
-        this.db = app.firestore()
+        this.db = app.firestore();
+        this.storage = app.storage();
+
         this.googleProvider = new app.auth.GoogleAuthProvider();
         this.facebookProvider = new app.auth.FacebookAuthProvider();
         this.timestamp = app.firestore.FieldValue.serverTimestamp();
+
     }
 
     // ====> Auth api
@@ -52,10 +56,8 @@ class Firebase {
                     .doc(authUser.uid)
                     .get()
                     .then(doc => {
-                        console.log('data:', doc.data())
                         const dbUser = doc.data();
-                        //console.log('dbUser:', dbUser)
-                        if (!dbUser.roles) {
+                        if (!dbUser.roles) { 
                             dbUser.roles = [];
                         }
                         //merge
@@ -77,6 +79,17 @@ class Firebase {
     message = (id) => this.db.collection('Messages').doc(id);
     messages = () => this.db.collection('Messages')
 
+    //* User API
+    user = (id) => this.db.collection('Users').doc(id);
+    users = () => this.db.collection('Users')
+
+    //* Storage
+    saveFile = (name, file) =>  this.storage.ref().child(name).put(file);
+    getFileUrl = (name) => this.storage.ref().child(name).getDownloadURL();
+     
+
+
+
 }
 
 export default Firebase;
@@ -86,7 +99,7 @@ export default Firebase;
             var menu = querySnapshot.docs.map(doc => { return { ...doc.data(), id: doc.id } });
             */
 
-/*  empty method allows to validate if there is data even if there is  a Collection 
+/*  empty method allows to validate if there is data even if there is  a Collection
 .then(
     querySnapshot => {
         if (!querySnapshot.empty) {

@@ -13,9 +13,9 @@ import AuthUserContext from './context';
 const withAuthorization = condition => Component => {
 
     class WithAuthorization extends React.Component {
-
+        
         componentDidMount() {
-
+            console.log('***********')
             this.listener = this.props.firebase.onAuthUserListener(
                 authUser => {
                     if (!condition(authUser)) {
@@ -33,8 +33,8 @@ const withAuthorization = condition => Component => {
         render() {
             return (
                 <AuthUserContext.Consumer>
-                    {authUser =>
-                        condition(authUser)
+                    {auth =>
+                        condition(auth.state.authUser)
                             ? <Component {...this.props} />
                             : 'solo admins'
                     }

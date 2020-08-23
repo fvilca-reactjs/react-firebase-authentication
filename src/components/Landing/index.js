@@ -1,13 +1,10 @@
 import React from 'react'
-import 'antd/dist/antd.css';
-import { DatePicker } from 'antd';
+import AudioPlayer from '../MusicApp/AudioPlayer';
 
 const Landing = () => {
     return (
-        <div>
-            <p data-item='Landing'>Landing</p>
-
-            <DatePicker/>
+        <div className='audio-player'>
+            <AudioPlayer></AudioPlayer>
         </div>
     )
 }
